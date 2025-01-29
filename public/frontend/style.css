@@ -1,0 +1,20 @@
+:root{
+    --primary:#0db50d;
+    --secondary:rgb(237, 237, 48);
+}
+.container{
+        width:90%;
+        margin: auto;
+    }
+.primary{
+    color: var(--primary);
+}
+.secondary{
+    color: var(--secondary);
+}
+.bg-pp{
+        background-color: var(--primary);
+    }
+.bg-secondary{
+        background-color: var(--secondary);
+    }
