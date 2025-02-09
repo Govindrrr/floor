@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use App\Mail\EmailNotification;
 use App\Models\Vendor;
+use Illuminate\Support\Facades\Mail;
 
 class VendorObserver
 {
@@ -11,9 +13,7 @@ class VendorObserver
      */
     public function created(Vendor $vendor): void
     {
-        if($vendor->status == 'approved'){
-            
-        }
+        
     }
 
     /**
@@ -21,7 +21,16 @@ class VendorObserver
      */
     public function updated(Vendor $vendor): void
     {
-        //
+        if($vendor->isDirty('status') && $vendor->status == 'approved'){
+            $data =[
+                "subject" => "Vendor request Approved",
+                "to" => $vendor->name,
+                "message" => "Your vendor request has been approved. Your login credentials are email: $vendor->email and password: admin123. Please do change your password after login.
+                login_url: ". asset('/vendo'),
+              
+            ];
+            Mail::to($vendor->email)->send(new EmailNotification($data));
+        }
     }
 
     /**

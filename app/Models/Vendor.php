@@ -54,4 +54,12 @@ class Vendor extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class);
+    }
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

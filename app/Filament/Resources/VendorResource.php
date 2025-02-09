@@ -6,6 +6,7 @@ use App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Resources\VendorResource\RelationManagers;
 use App\Models\Vendor;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -47,19 +48,33 @@ class VendorResource extends Resource
                     ->hidden()
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
-                    ->required()
-                    
+                    ->required()              
                     ->options([
                         'pending'=>'pending',
                         'approved'=>'approved',
                         'rejected'=>'rejected'
                     ])
                     ->default('pending'),
+                
                 Forms\Components\TextInput::make('balance')
                     ->required()
                     ->hidden()
                     ->numeric()
                     ->default(0),
+                Repeater::make('shop')
+                    ->relationship('shop')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                        ->label('Shop-Name')
+                        ->required()
+                        ->maxLength(255),
+                        Forms\Components\TextInput::make('address')
+                        ->label('Address')
+                        ->required()
+                        ->maxLength(255)])->addable(false),
+
+
+              
             ]);
     }
 

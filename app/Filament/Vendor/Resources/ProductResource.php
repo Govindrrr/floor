@@ -28,7 +28,14 @@ class ProductResource extends Resource
                     ->label('shop Id')
                     ->readOnly()
                     ->default(Auth::guard('vendor')->user()->id)
-                    ->required(),
+                    ->rule(function(){
+                        return function ($attribute, $value, $fail){
+                            $vendorId = Auth::guard('vendor')->user()->id;
+                            if($value != $vendorId){
+                                $fail(__('The attribute most matay you authenticated vendor Id.', ['attribute'=> $attribute]));
+                            }
+                        };
+                    }),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -51,6 +58,10 @@ class ProductResource extends Resource
 
             ]);
     }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('vendor_id', Auth::guard('vendor')->user()->id);
+    }
 
     public static function table(Table $table): Table
     {
@@ -60,10 +71,10 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('price')
-                    ->money()
+                    ->prefix('NRs.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('discount')
-                    ->numeric()
+                    ->suffix('%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('vendor.name')
                     ->numeric()

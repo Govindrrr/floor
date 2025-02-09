@@ -27,8 +27,9 @@
             Dear {{$data['to']}}
         </h1>
         <p>
-            {{data['meassage']}}
+            {{$data['message']}}
         </p>
+        {{asset('admin/login')}}
         <footer>
             REgards,
         </footer>
